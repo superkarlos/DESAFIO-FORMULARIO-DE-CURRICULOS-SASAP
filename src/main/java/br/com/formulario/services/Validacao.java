@@ -19,8 +19,6 @@ import jakarta.servlet.http.HttpServletRequest;
 public class Validacao {
      @Autowired
    // private CurriculoService curriculoService;
-
-
      private boolean ValidarArquivo(MultipartFile file) {
         String[] allowedExtensions = {"doc", "docx", "pdf"};
         for (String ext : allowedExtensions) {

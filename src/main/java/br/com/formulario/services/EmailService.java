@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import br.com.formulario.enumtipo.Status;
+import br.com.formulario.model.Curriculo;
 import br.com.formulario.model.EmailModel;
 import br.com.formulario.repository.EmailRespository;
 import jakarta.mail.MessagingException;
@@ -31,8 +32,23 @@ public class EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    public void enviar(EmailModel emailModel, byte[] anexo, String nomeAnexo) {
+    public void enviar( byte[] anexo, String nomeAnexo,Curriculo curriculo) {
+
+        String texto = "Olá " + curriculo.getNome().toUpperCase() + ",\n\n" +
+        "Seu currículo foi avaliado e ficamos felizes em saber do seu interesse na vaga de " + curriculo.getCargoDesejado().toUpperCase() + ". " +
+        "É ótimo ver que você está no nível de escolaridade: " + curriculo.getEscolaridade() + ". " +
+        "Em breve, você receberá um SMS no seu número de telefone: " + curriculo.getTelefone() + ".\n\n" +
+        "Obrigado por se candidatar!\n\n" +
+        "Atenciosamente,\n Sesap";
+
+        EmailModel emailModel = new EmailModel();
+        emailModel.setReferencia_ip(curriculo.getIp());
+        emailModel.setEnviador("sistemaenvioemail08@gmail.com");
+        emailModel.setReceptor(curriculo.getEmail());
+        emailModel.setSubjt_titutlo("Envio de curriculo");
+        emailModel.setTexto("Seu curriculo foi recebido! \n" + texto );
         emailModel.setData(LocalDateTime.now());
+
         try {
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);

@@ -26,20 +26,19 @@ import br.com.formulario.model.EmailModel;
 import br.com.formulario.services.CurriculoService;
 import br.com.formulario.services.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Controller
 public class CurriculoController {
+
     private static final Logger logger = LoggerFactory.getLogger(CurriculoController.class);
 
     @Autowired
     private CurriculoService curriculoService;
-    @Autowired
-    private EmailService emailService;
-    
-    
+   
     @GetMapping("/formulario")
     public String get_formulario(Model model) {
         model.addAttribute("curriculoFormDto", new CurriculoFormDto(null, null, null, null, null, null, null));
@@ -47,7 +46,7 @@ public class CurriculoController {
     }
 
     @PostMapping("/formulario")
-    public String postFormulario(
+    public String postFormulario(@Valid
             @RequestParam("file") MultipartFile file,
             @ModelAttribute("curriculoFormDto") CurriculoFormDto formDTO,
             BindingResult bindingResult,
@@ -55,6 +54,7 @@ public class CurriculoController {
     
         Curriculo curriculum = new Curriculo();
         BeanUtils.copyProperties(formDTO, curriculum);
+        
         if (bindingResult.hasErrors()) {
             return "index";
         }
@@ -71,22 +71,8 @@ public class CurriculoController {
         curriculum.setIp(request.getRemoteAddr());
         curriculum.setDataHoraEnvio(LocalDateTime.now());
     
-        EmailDto emailDto = new EmailDto();
-        emailDto.setReferencia_ip(request.getRemoteAddr());
-        emailDto.setEnviador("jcarlos.alegria2015@gmail.com");
-        emailDto.setReceptor(curriculum.getEmail());
-        emailDto.setSubjt_titutlo("envio de currículo");
-        emailDto.setTexto("Seu currículo foi recebido.");
-    
-        EmailModel emailModel = new EmailModel();
-        BeanUtils.copyProperties(emailDto, emailModel);
-    
-        curriculoService.save(curriculum);
-    
-        // Enviar e-mail com anexo
-        emailService.enviar(emailModel, curriculum.getArquivo(), "curriculo.pdf");
-    
-        return "enviado"; // Redirecionar para página de enviado
+        this.curriculoService.save(curriculum);
+        return "enviado"; 
     }
     
     private boolean validarArquivo(MultipartFile arquivo) {
