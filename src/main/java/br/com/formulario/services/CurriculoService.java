@@ -16,54 +16,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CurriculoService {
-
-    private final Path rootLocation = Paths.get("uploads");
-
     @Autowired
-    private CurriculoRepository curriculoRepository;
+    private CurriculoRepository curriculumRepository;
 
-    public boolean isCurriculoValido(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-        if (fileName != null) {
-            String fileExtension = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
-            return fileExtension.equals(".doc") || fileExtension.equals(".docx") || fileExtension.equals(".pdf");
-        }
-        return false;
+    public void save(Curriculo curriculum) {
+        curriculumRepository.save(curriculum);
+    }
+    public List<Curriculo> getAllCurriculos() {
+        return curriculumRepository.findAll();
     }
 
-    public void save(CurriculoFormDto curriculoFormDto, String ip) {
-        try {
-            if (!Files.exists(rootLocation)) {
-                Files.createDirectories(rootLocation);
-            }
-            Path destinationFile = this.rootLocation.resolve(Paths.get(curriculoFormDto.getCurriculo().getOriginalFilename()))
-                    .normalize().toAbsolutePath();
-            if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
-                throw new RuntimeException("Não é possível salvar o arquivo fora do diretório de upload.");
-            }
-            try (var inputStream = curriculoFormDto.getCurriculo().getInputStream()) {
-                Files.copy(inputStream, destinationFile);
-            }
+    public Optional<Curriculo> getCurriculumById(Long id){
+        return curriculumRepository.findById(id);
 
-            Curriculo curriculo = new Curriculo(
-                curriculoFormDto.getNome(),
-                curriculoFormDto.getEmail(),
-                curriculoFormDto.getTelefone(),
-                curriculoFormDto.getCargoDesejado(),
-                curriculoFormDto.getEscolaridade(),
-                curriculoFormDto.getObservacoes(),
-                destinationFile.toString(),
-                ip,
-                LocalDateTime.now()
-            );
-
-            curriculoRepository.save(curriculo);
-
-        } catch (IOException e) {
-            throw new RuntimeException("Falha ao salvar o currículo", e);
-        }
     }
+   
+    
 }

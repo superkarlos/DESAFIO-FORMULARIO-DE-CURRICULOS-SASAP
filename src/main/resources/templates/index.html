@@ -5,37 +5,77 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
-    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
   <title>Formulário</title>
+  <style>
+    body {
+      background-color: #a5a5a5;
+    }
+
+    main {
+      width: 500px;
+      margin: auto;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+      color: #007bff;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #004085;
+    }
+  </style>
 </head>
 
 <body>
   <header>
     <main>
       <div class="container tabela" style="margin-top: 50px">
+        <h2 class="mb-4" style="color: #007bff">Envie seu Currículo</h2>
         <form action="/formulario" method="post" th:object="${curriculoFormDto}" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="nome" class="form-label">Nome</label>
             <input type="text" class="form-control" id="nome" th:field="*{nome}" required minlength="3"
-            maxlength="32"/>
-            <div th:if="${#fields.hasErrors('nome')}" class="text-danger">Erro no nome</div>
+              maxlength="32" />
+            <div th:if="${#fields.hasErrors('nome')}" class="text-danger">
+              Erro no nome
+            </div>
           </div>
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" th:field="*{email}" required minlength="3"
               maxlength="32" />
-            <div th:if="${#fields.hasErrors('email')}" class="text-danger">Erro no email</div>
+            <div th:if="${#fields.hasErrors('email')}" class="text-danger">
+              Erro no email
+            </div>
           </div>
           <div class="mb-3">
             <label for="telefone" class="form-label">Telefone</label>
-            <input type="text" class="form-control" id="telefone" th:field="*{telefone} "  minlength="5" />
-            <div th:if="${#fields.hasErrors('telefone')}" class="text-danger">O telefone deve conter  dígitos numéricos.</div>
+            <input type="text" class="form-control" id="telefone" th:field="*{telefone} " minlength="5" />
+            <div th:if="${#fields.hasErrors('telefone')}" class="text-danger">
+              O telefone deve conter dígitos numéricos.
+            </div>
           </div>
           <div class="mb-3">
             <label for="cargo" class="form-label">Cargo</label>
-            <input type="text" class="form-control" id="cargoDesejado" th:field="*{cargoDesejado}" required minlength="5"
-              maxlength="15" />
-            <div th:if="${#fields.hasErrors('cargoDesejado')}" class="text-danger">Erro no cargo</div>
+            <input type="text" class="form-control" id="cargoDesejado" th:field="*{cargoDesejado}" required
+              minlength="5" maxlength="15" />
+            <div th:if="${#fields.hasErrors('cargoDesejado')}" class="text-danger">
+              Erro no cargo
+            </div>
           </div>
           <div class="mb-3">
             <label for="escolaridade" class="form-label">Escolaridade</label>
@@ -45,25 +85,21 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="observacoes" class="form-label">Observação</label>
-            <input type="text" class="form-control" id="observacoes" th:field="*{observacoes}" />
-      
+            <label for="observacao" class="form-label">Observação</label>
+            <textarea class="form-control" id="observacoes" th:field="*{observacoes}" rows="3"></textarea>
           </div>
-           
           <div class="mb-3">
             <label for="curriculo" class="form-label">Currículo</label>
-            <input type="file" class="form-control" id="curriculo" th:field="*{curriculo}" accept=".doc,.docx,.pdf" required />
-            <div th:if="${#fields.hasErrors('curriculo')}" class="text-danger">Erro no currículo</div>
+            <input type="file" class="form-control" name="file" required />
           </div>
-
           <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
       </div>
     </main>
   </header>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
-  </script>
+    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
