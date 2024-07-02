@@ -45,6 +45,11 @@
     <main>
       <div class="container tabela" style="margin-top: 50px">
         <h2 class="mb-4" style="color: #007bff">Envie seu Currículo</h2>
+
+        <div th:if="${message}" class="alert alert-danger" role="alert">
+          <span th:text="${message}"></span>
+        </div>
+
         <form action="/formulario" method="post" th:object="${curriculoFormDto}" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="nome" class="form-label">Nome</label>
