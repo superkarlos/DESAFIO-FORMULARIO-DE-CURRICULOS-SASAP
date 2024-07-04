@@ -24,7 +24,7 @@ import br.com.formulario.erros.FormExecption;
 import br.com.formulario.model.Curriculo;
 import br.com.formulario.model.EmailModel;
 import br.com.formulario.services.CurriculoService;
-import br.com.formulario.services.EmailService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
@@ -50,39 +50,54 @@ public class CurriculoController {
             @RequestParam("file") MultipartFile file,
             @ModelAttribute("curriculoFormDto") CurriculoFormDto formDTO,
             BindingResult bindingResult,
-            HttpServletRequest request) throws IOException {
-    
-        Curriculo curriculum = new Curriculo();
-        BeanUtils.copyProperties(formDTO, curriculum);
-        
-        if (bindingResult.hasErrors()) {
-            return "index";
-        }
-        if (file.isEmpty() || !validarArquivo(file)) {
-            bindingResult.rejectValue("arquivo", "file.invalid", "Por favor, envie um arquivo .doc, .docx ou .pdf.");
-            return "index";
-        }
-        if (file.getSize() > 1048576) { // 1MB
-            bindingResult.rejectValue("arquivo", "file.size", "O tamanho máximo do arquivo é 1MB.");
-            return "index";
-        }
-    
-        curriculum.setArquivo(file.getBytes());
-        curriculum.setIp(request.getRemoteAddr());
-        curriculum.setDataHoraEnvio(LocalDateTime.now());
-    
-        this.curriculoService.save(curriculum);
-        return "enviado"; 
-    }
-    
-    private boolean validarArquivo(MultipartFile arquivo) {
-        String[] tipo = {"doc", "docx", "pdf"};
-        for (String ext : tipo) {
-            if (arquivo.getOriginalFilename().toLowerCase().endsWith("." + ext)) {
-                return true;
+            HttpServletRequest request)  {
+                if (bindingResult.hasErrors()) {
+                    System.out.println("erooo");
+                    return "index";
+                }
+                if (file.isEmpty() || !validarArquivo(file)) {
+                    bindingResult.rejectValue("arquivo", "file.invalid", "Por favor, envie um arquivo .doc, .docx ou .pdf back.");
+                    return "index";
+                }
+                if (file.getSize() > 1048576) { // 1MB
+                    bindingResult.rejectValue("arquivo", "file.size", "O tamanho máximo do arquivo é 1MB back.");
+                    return "index";
+                }
+
+                Curriculo curriculum = new Curriculo();
+                BeanUtils.copyProperties(formDTO, curriculum);
+                
+                try {
+                    curriculum.setArquivo(file.getBytes());
+                } catch (IOException e) {
+                    
+                    logger.error("Erro ao ler o arquivo enviado: " + e.getMessage());
+                    return "index";
+                }
+                
+             
+                curriculum.setIp(request.getRemoteAddr());
+                curriculum.setDataHoraEnvio(LocalDateTime.now());
+
+                String originalFilename = file.getOriginalFilename();
+                curriculum.setFileName(originalFilename);
+            
+                this.curriculoService.save(curriculum);
+                return "enviado"; 
             }
-        }
-        return false;
-    }
+            
+            private boolean validarArquivo(MultipartFile arquivo) {
+                String[] tipo = {"doc", "docx", "pdf"};
+                for (String ext : tipo) {
+                    if (arquivo.getOriginalFilename().toLowerCase().endsWith("." + ext)) {
+                        return true;
+                    }
+                }
+                return false;   
+              
+            }
+               
+              
+          
     
 }

@@ -15,15 +15,21 @@ public class CurriculoService {
     @Autowired
     private CurriculoRepository curriculumRepository;
 
-    @Autowired
-    private EmailService emailService;
+   
+
+    @Autowired 
+    private TesteEmail testeEmail;
 
     public void save(Curriculo curriculum) {
-
-        emailService.enviar( curriculum.getArquivo(), "curriculo.pdf", curriculum);
-        
-        curriculumRepository.save(curriculum);
+       curriculumRepository.save(curriculum);
+        System.out.println(curriculum.getId());
+        System.out.println("eviando..");
+       testeEmail.enviar(curriculum);
+      System.out.println("nome "+curriculum.getNome());
+     
     }
+
+    
     public List<Curriculo> getAllCurriculos() {
         return curriculumRepository.findAll();
     }

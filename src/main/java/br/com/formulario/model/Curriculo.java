@@ -43,7 +43,7 @@ public class Curriculo {
     private String ip;
     private LocalDateTime dataHoraEnvio;
 
-
+    private String fileName; 
 
     
 

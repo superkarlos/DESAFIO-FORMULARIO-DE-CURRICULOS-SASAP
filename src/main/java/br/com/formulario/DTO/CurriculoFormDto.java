@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,8 +18,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CurriculoFormDto {
-    @NotBlank
-    @NotNull
+    @NotBlank(message ="Digite seu nome ")
+    @Size(min = 5, max = 20, message = "O nome deve ter entre 5 e 20 caracteres")
+    @NotNull(message = "Campo nome não pode ser nulo")
     private String nome;
     @NotBlank
     @NotNull

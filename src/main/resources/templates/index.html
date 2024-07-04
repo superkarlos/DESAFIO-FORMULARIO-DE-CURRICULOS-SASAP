@@ -50,15 +50,18 @@
           <span th:text="${message}"></span>
         </div>
 
-        <form action="/formulario" method="post" th:object="${curriculoFormDto}" enctype="multipart/form-data">
+        <form action="/formulario" method="post" th:object="${curriculoFormDto}" enctype="multipart/form-data"
+          id="formCurriculo">
           <div class="mb-3">
             <label for="nome" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="nome" th:field="*{nome}" required minlength="3"
-              maxlength="32" />
+            <input type="text" class="form-control" id="nome" th:field="*{nome}" required minlength="5"
+            maxlength="32" />
             <div th:if="${#fields.hasErrors('nome')}" class="text-danger">
-              Erro no nome
+                <div th:errors="*{nome}"></div>
             </div>
-          </div>
+        </div>
+        
+        
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" th:field="*{email}" required minlength="3"
@@ -69,7 +72,7 @@
           </div>
           <div class="mb-3">
             <label for="telefone" class="form-label">Telefone</label>
-            <input type="text" class="form-control" id="telefone" th:field="*{telefone} " minlength="5" />
+            <input type="text" class="form-control" id="telefone" th:field="*{telefone} " required minlength="5" />
             <div th:if="${#fields.hasErrors('telefone')}" class="text-danger">
               O telefone deve conter dígitos numéricos.
             </div>
@@ -95,9 +98,10 @@
           </div>
           <div class="mb-3">
             <label for="curriculo" class="form-label">Currículo</label>
-            <input type="file" class="form-control" name="file"  required />
-          
-          </div>
+            <input type="file" class="form-control" name="file" id="fileInput" required/>
+            <div id="fileError" class="text-danger"></div>
+        </div>
+
           <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
       </div>
@@ -106,6 +110,35 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
     crossorigin="anonymous"></script>
+  <script>
+    document.getElementById("formCurriculo").onsubmit = function (event) {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+      const fileError = document.getElementById("fileError");
+      fileError.textContent = "";
+
+      if (!file) {
+        fileError.textContent = "Por favor, selecione um arquivo. front";
+        event.preventDefault();
+        return;
+      }
+
+      const allowedExtensions = /(\.pdf|\.doc|\.docx)$/i;
+      if (!allowedExtensions.exec(file.name)) {
+        fileError.textContent =
+          "Por favor, envie um arquivo .doc, .docx ou .pdf. front";
+        event.preventDefault();
+        return;
+      }
+
+      if (file.size > 1048576) {
+        // 1MB
+        fileError.textContent = "O tamanho máximo do arquivo é 1MB. front";
+        event.preventDefault();
+        return;
+      }
+    };
+  </script>
 </body>
 
 </html>

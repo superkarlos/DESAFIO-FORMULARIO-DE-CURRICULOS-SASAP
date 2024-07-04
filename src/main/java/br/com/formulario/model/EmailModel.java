@@ -26,7 +26,7 @@ public class EmailModel  implements Serializable{
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String referencia_ip;
+    private Long curriculo_id;
     private String enviador;
     private String receptor;
     private String subjt_titutlo;
@@ -36,7 +36,9 @@ public class EmailModel  implements Serializable{
    @Enumerated(EnumType.STRING)
     private Status status;
    
-    @Lob
-    @Column(nullable = true,length = 10048576) // Tamanho máximo de 1MB (em bytes)
-    private byte[] arquivo;
+    private String candidato;
+    //########## caso queira salvar o curriculo em um banco de dados !!
+    //@Lob
+   // @Column(nullable = true,length = 10048576) // Tamanho máximo de 1MB (em bytes)
+   // private byte[] arquivo;
 }
