@@ -10,13 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.formulario.DTO.CurriculoFormDto;
 import br.com.formulario.DTO.EmailDto;
@@ -28,17 +31,17 @@ import br.com.formulario.services.CurriculoService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-@Controller
-public class CurriculoController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CurriculoController.class);
+@Controller
+public class CurriculoController  {
 
     @Autowired
     private CurriculoService curriculoService;
    
-    @GetMapping("/formulario")
+    @GetMapping()
     public ModelAndView getForm() {
         ModelAndView mv = new ModelAndView();
         CurriculoFormDto curriculoFormDto = new CurriculoFormDto();
@@ -46,7 +49,7 @@ public class CurriculoController {
         mv.addObject("curriculoFormDto", curriculoFormDto);
         return mv;
     }
-  
+ 
     @PostMapping("/formulario")
     public ModelAndView postFormulario(
             @RequestParam("file") MultipartFile file,
@@ -54,7 +57,9 @@ public class CurriculoController {
             BindingResult bindingResult,
             HttpServletRequest request)  {
              
-        ModelAndView mv = new ModelAndView();    
+        ModelAndView mv = new ModelAndView();  
+        
+        
         if (bindingResult.hasErrors()) {
             mv.addObject("curriculoFormDto", formDTO);
             mv.setViewName("index"); 
@@ -79,18 +84,18 @@ public class CurriculoController {
         try {
             curriculum.setArquivo(file.getBytes());
         } catch (IOException e) {
-            logger.error("Erro ao ler o arquivo enviado: " + e.getMessage());
-            mv.setViewName("index");  
+            
+            mv.setViewName("error");  
             return mv;
         }
         
         curriculum.setIp(request.getRemoteAddr());
        curriculum.setDataHoraEnvio(LocalDateTime.now());
 
-     String originalFilename = file.getOriginalFilename();
+        String originalFilename = file.getOriginalFilename();
         curriculum.setFileName(originalFilename);
 
-        curriculoService.save(curriculum);
+       curriculoService.save(curriculum);
 
         mv.setViewName("enviado");  
         return mv;
