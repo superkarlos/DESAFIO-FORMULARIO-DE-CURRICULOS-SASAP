@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.servlet.ModelAndView;
 
 import br.com.formulario.DTO.CurriculoFormDto;
 import br.com.formulario.DTO.EmailDto;
@@ -30,7 +30,6 @@ import jakarta.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 @Controller
 public class CurriculoController {
 
@@ -40,64 +39,70 @@ public class CurriculoController {
     private CurriculoService curriculoService;
    
     @GetMapping("/formulario")
-    public String get_formulario(Model model) {
-        model.addAttribute("curriculoFormDto", new CurriculoFormDto(null, null, null, null, null, null, null));
-        return "index";
+    public ModelAndView getForm() {
+        ModelAndView mv = new ModelAndView();
+        CurriculoFormDto curriculoFormDto = new CurriculoFormDto();
+        mv.setViewName("index"); 
+        mv.addObject("curriculoFormDto", curriculoFormDto);
+        return mv;
     }
-
+  
     @PostMapping("/formulario")
-    public String postFormulario(@Valid
+    public ModelAndView postFormulario(
             @RequestParam("file") MultipartFile file,
-            @ModelAttribute("curriculoFormDto") CurriculoFormDto formDTO,
+            @ModelAttribute("curriculoFormDto") @Valid CurriculoFormDto formDTO,
             BindingResult bindingResult,
             HttpServletRequest request)  {
-                if (bindingResult.hasErrors()) {
-                    System.out.println("erooo");
-                    return "index";
-                }
-                if (file.isEmpty() || !validarArquivo(file)) {
-                    bindingResult.rejectValue("arquivo", "file.invalid", "Por favor, envie um arquivo .doc, .docx ou .pdf back.");
-                    return "index";
-                }
-                if (file.getSize() > 1048576) { // 1MB
-                    bindingResult.rejectValue("arquivo", "file.size", "O tamanho máximo do arquivo é 1MB back.");
-                    return "index";
-                }
-
-                Curriculo curriculum = new Curriculo();
-                BeanUtils.copyProperties(formDTO, curriculum);
-                
-                try {
-                    curriculum.setArquivo(file.getBytes());
-                } catch (IOException e) {
-                    
-                    logger.error("Erro ao ler o arquivo enviado: " + e.getMessage());
-                    return "index";
-                }
-                
              
-                curriculum.setIp(request.getRemoteAddr());
-                curriculum.setDataHoraEnvio(LocalDateTime.now());
+        ModelAndView mv = new ModelAndView();    
+        if (bindingResult.hasErrors()) {
+            mv.addObject("curriculoFormDto", formDTO);
+            mv.setViewName("index"); 
+            return mv;
+        }
 
-                String originalFilename = file.getOriginalFilename();
-                curriculum.setFileName(originalFilename);
-            
-                this.curriculoService.save(curriculum);
-                return "enviado"; 
+        if (file.isEmpty() || !validarArquivo(file)) {
+            bindingResult.rejectValue("arquivo", "file.invalid", "Por favor, envie um arquivo .doc, .docx ou .pdf.");
+            mv.setViewName("index");  
+            return mv;
+        }
+
+        if (file.getSize() > 1048576) { // 1MB
+            bindingResult.rejectValue("arquivo", "file.size", "O tamanho máximo do arquivo é 1MB.");
+            mv.setViewName("index");  
+            return mv;
+        }
+
+        Curriculo curriculum = new Curriculo();
+        BeanUtils.copyProperties(formDTO, curriculum);
+        
+        try {
+            curriculum.setArquivo(file.getBytes());
+        } catch (IOException e) {
+            logger.error("Erro ao ler o arquivo enviado: " + e.getMessage());
+            mv.setViewName("index");  
+            return mv;
+        }
+        
+        curriculum.setIp(request.getRemoteAddr());
+       curriculum.setDataHoraEnvio(LocalDateTime.now());
+
+     String originalFilename = file.getOriginalFilename();
+        curriculum.setFileName(originalFilename);
+
+        curriculoService.save(curriculum);
+
+        mv.setViewName("enviado");  
+        return mv;
+    }
+
+    private boolean validarArquivo(MultipartFile arquivo) {
+        String[] tipo = {"doc", "docx", "pdf"};
+        for (String ext : tipo) {
+            if (arquivo.getOriginalFilename().toLowerCase().endsWith("." + ext)) {
+                return true;
             }
-            
-            private boolean validarArquivo(MultipartFile arquivo) {
-                String[] tipo = {"doc", "docx", "pdf"};
-                for (String ext : tipo) {
-                    if (arquivo.getOriginalFilename().toLowerCase().endsWith("." + ext)) {
-                        return true;
-                    }
-                }
-                return false;   
-              
-            }
-               
-              
-          
-    
+        }
+        return false;
+    }
 }

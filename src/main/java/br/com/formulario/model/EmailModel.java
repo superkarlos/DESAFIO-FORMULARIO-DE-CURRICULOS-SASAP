@@ -37,7 +37,7 @@ public class EmailModel  implements Serializable{
     private Status status;
    
     private String candidato;
-    //########## caso queira salvar o curriculo em um banco de dados !!
+    //########## caso queira salvar o curriculo em um banco de dados########################## !!
     //@Lob
    // @Column(nullable = true,length = 10048576) // Tamanho máximo de 1MB (em bytes)
    // private byte[] arquivo;

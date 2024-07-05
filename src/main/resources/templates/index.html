@@ -1,144 +1,72 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
-    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
-  <title>Formulário</title>
-  <style>
-    body {
-      background-color: #a5a5a5;
-    }
-
-    main {
-      width: 500px;
-      margin: auto;
-    }
-
-    .container {
-      background-color: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-label {
-      color: #007bff;
-    }
-
-    .btn-primary {
-      background-color: #007bff;
-      border-color: #007bff;
-    }
-
-    .btn-primary:hover {
-      background-color: #0056b3;
-      border-color: #004085;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
+    <title>Formulário de Currículo</title>
 </head>
-
 <body>
-  <header>
-    <main>
-      <div class="container tabela" style="margin-top: 50px">
-        <h2 class="mb-4" style="color: #007bff">Envie seu Currículo</h2>
-
-        <div th:if="${message}" class="alert alert-danger" role="alert">
-          <span th:text="${message}"></span>
-        </div>
-
-        <form action="/formulario" method="post" th:object="${curriculoFormDto}" enctype="multipart/form-data"
-          id="formCurriculo">
-          <div class="mb-3">
-            <label for="nome" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="nome" th:field="*{nome}" required minlength="5"
-            maxlength="32" />
-            <div th:if="${#fields.hasErrors('nome')}" class="text-danger">
-                <div th:errors="*{nome}"></div>
+    <div class="container mt-5">
+        <h1>Enviar Currículo</h1>
+        <form action="/formulario" method="post" enctype="multipart/form-data" th:object="${curriculoFormDto}">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="nome" name="nome" th:field="*{nome}" />
+                <div th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-danger"></div>
             </div>
-        </div>
-        
-        
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" th:field="*{email}" required minlength="3"
-              maxlength="32" />
-            <div th:if="${#fields.hasErrors('email')}" class="text-danger">
-              Erro no email
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" th:field="*{email}" />
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></div>
             </div>
-          </div>
-          <div class="mb-3">
-            <label for="telefone" class="form-label">Telefone</label>
-            <input type="text" class="form-control" id="telefone" th:field="*{telefone} " required minlength="5" />
-            <div th:if="${#fields.hasErrors('telefone')}" class="text-danger">
-              O telefone deve conter dígitos numéricos.
+            <div class="mb-3">
+                <label for="telefone" class="form-label">Telefone</label>
+                <input type="text" class="form-control" id="telefone" name="telefone" th:field="*{telefone}" />
+                <div th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="text-danger"></div>
             </div>
-          </div>
-          <div class="mb-3">
-            <label for="cargo" class="form-label">Cargo</label>
-            <input type="text" class="form-control" id="cargoDesejado" th:field="*{cargoDesejado}" required
-              minlength="5" maxlength="15" />
-            <div th:if="${#fields.hasErrors('cargoDesejado')}" class="text-danger">
-              Erro no cargo
+            <div class="mb-3">
+                <label for="cargoDesejado" class="form-label">Cargo Desejado</label>
+                <input type="text" class="form-control" id="cargoDesejado" name="cargoDesejado" th:field="*{cargoDesejado}" />
+                <div th:if="${#fields.hasErrors('cargoDesejado')}" th:errors="*{cargoDesejado}" class="text-danger"></div>
             </div>
-          </div>
-          <div class="mb-3">
-            <label for="escolaridade" class="form-label">Escolaridade</label>
-            <select id="escolaridade" th:field="*{escolaridade}" class="form-select">
-              <option th:each="escolaridade : ${T(br.com.formulario.enumtipo.Escolaridade).values()}"
-                th:value="${escolaridade}" th:text="${escolaridade}"></option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="observacao" class="form-label">Observação</label>
-            <textarea class="form-control" id="observacoes" th:field="*{observacoes}" rows="3"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="curriculo" class="form-label">Currículo</label>
-            <input type="file" class="form-control" name="file" id="fileInput" required/>
-            <div id="fileError" class="text-danger"></div>
-        </div>
-
-          <button type="submit" class="btn btn-primary">Enviar</button>
+            <div class="mb-3">
+                <label for="escolaridade" class="form-label">Escolaridade</label>
+                <select id="escolaridade" th:field="*{escolaridade}" class="form-select">
+                  <option th:each="escolaridade : ${T(br.com.formulario.enumtipo.Escolaridade).values()}"
+                    th:value="${escolaridade}" th:text="${escolaridade}"></option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="observacoes" class="form-label">Observações</label>
+                <textarea class="form-control" id="observacoes" name="observacoes" th:field="*{observacoes}"></textarea>
+                <div th:if="${#fields.hasErrors('observacoes')}" th:errors="*{observacoes}" class="text-danger"></div>
+            </div>
+            <div class="mb-3">
+                <label for="arquivo" class="form-label">Arquivo</label>
+                <input type="file" class="form-control" id="arquivo" name="file" />
+                <div id="error-arquivo" class="text-danger"></div>
+                <div th:if="${#fields.hasErrors('arquivo')}" th:errors="*{arquivo}" class="text-danger"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
-      </div>
-    </main>
-  </header>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-    crossorigin="anonymous"></script>
-  <script>
-    document.getElementById("formCurriculo").onsubmit = function (event) {
-      const fileInput = document.getElementById("fileInput");
-      const file = fileInput.files[0];
-      const fileError = document.getElementById("fileError");
-      fileError.textContent = "";
+    </div>
 
-      if (!file) {
-        fileError.textContent = "Por favor, selecione um arquivo. front";
-        event.preventDefault();
-        return;
-      }
-
-      const allowedExtensions = /(\.pdf|\.doc|\.docx)$/i;
-      if (!allowedExtensions.exec(file.name)) {
-        fileError.textContent =
-          "Por favor, envie um arquivo .doc, .docx ou .pdf. front";
-        event.preventDefault();
-        return;
-      }
-
-      if (file.size > 1048576) {
-        // 1MB
-        fileError.textContent = "O tamanho máximo do arquivo é 1MB. front";
-        event.preventDefault();
-        return;
-      }
-    };
+    <script>
+      document.getElementById('formulario').addEventListener('submit', function(event) {
+          var fileInput = document.getElementById('arquivo');
+          if (fileInput.files.length > 0) {
+              var fileSize = fileInput.files[0].size; // tamanho em bytes
+              var maxSize = 1048576; // 1MB em bytes
+              if (fileSize > maxSize) {
+                  event.preventDefault(); // impedir o envio do formulário
+                  document.getElementById('error-arquivo').innerText = 'O tamanho máximo do arquivo é 1MB.';
+              } else {
+                  document.getElementById('error-arquivo').innerText = '';
+              }
+          }
+      });
   </script>
 </body>
-
 </html>
