@@ -119,9 +119,9 @@ Caso tenha ocorrido algum erro, você verá esta página:
 ### Envio de e-mail com os dados do formulário e o arquivo anexado:
 
 6.1 Selecione uma nova query e digite:
-    ```sql
+  ```sql
     SELECT * FROM email_model;
-    ```
+  ```
 
 ![Status](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/da5b9a3e-8e4a-4a70-a335-2dc4dabec054)
 
