@@ -42,11 +42,11 @@ public class TesteEmail {
          String destino = curriculo.getEmail();
          String titulo = "Curriculo Recebido";
          String texto ="Olá " + curriculo.getNome().toUpperCase() + ",\n\n" +
-         "Seu currículo foi avaliado e ficamos felizes em saber do seu interesse na vaga de " + curriculo.getCargoDesejado().toUpperCase() + ". " +
-         "É ótimo ver que você está no nível de escolaridade: " + curriculo.getEscolaridade() + ". " +
+         "Seu currículo foi avaliado e ficamos felizes em saber do seu interesse na vaga de " + curriculo.getCargoDesejado().toUpperCase() + ",\n\n" +
+         "É ótimo ver que você está no nível de escolaridade: " + curriculo.getEscolaridade()  + ",\n\n" +
          "Em breve, você receberá um SMS no seu número de telefone: " + curriculo.getTelefone() + ".\n\n" +
          "Obrigado por se candidatar!\n\n" +
-         "Atenciosamente,\n Sesap";
+         "Atenciosamente,\n  SISTEMA DE EMAILS";
 
 
         EmailModel emailModel = new EmailModel();

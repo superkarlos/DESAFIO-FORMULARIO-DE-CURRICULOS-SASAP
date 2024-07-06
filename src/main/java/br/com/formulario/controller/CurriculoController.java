@@ -95,7 +95,7 @@ public class CurriculoController  {
         String originalFilename = file.getOriginalFilename();
         curriculum.setFileName(originalFilename);
 
-       curriculoService.save(curriculum);
+      curriculoService.save(curriculum);
 
         mv.setViewName("enviado");  
         return mv;

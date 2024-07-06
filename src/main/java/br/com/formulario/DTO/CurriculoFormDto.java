@@ -26,7 +26,7 @@ public class CurriculoFormDto {
     private String nome;
 
     @NotBlank(message = "O campo e-mail não pode ser vazio")
-@NotNull
+   @NotNull
   @Size(min = 12, message = "Por favor, use um endereço de e-mail válido e existente, como por exemplo exemplo@gmail.com")
   @Email(message = "Por favor, use um endereço de e-mail válido e existente, como por exemplo exemplo@gmail.com")
     private String email;
