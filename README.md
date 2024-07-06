@@ -37,11 +37,6 @@ Caso tenha ocorrido algum erro, você verá esta página:
 
 ![Erro](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/66068f27-7de3-48d0-8a6b-ae67e901159e)
 
-### Envio de e-mail com os dados do formulário e o arquivo anexado:
-
-![Status](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/da5b9a3e-8e4a-4a70-a335-2dc4dabec054)
-
-- O status mostra se houve falha ou se foi enviado com sucesso.
 
 ## Tecnologias Utilizadas
 
@@ -114,6 +109,18 @@ Caso tenha ocorrido algum erro, você verá esta página:
    para visualizar as informações do currículo no banco de dados.
 
 ![Banco de Dados](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/0b2c966e-44e2-40b3-ac8b-c30438d33c31)
+
+### Envio de e-mail com os dados do formulário e o arquivo anexado:
+
+6.1 Selecione uma nova query e digite:
+    ```sql
+    SELECT * FROM email_model;
+    ```
+
+![Status](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/da5b9a3e-8e4a-4a70-a335-2dc4dabec054)
+
+- O status mostra se houve falha ou se foi enviado com sucesso.
+
 
 ### Usando o terminal MySQL:
 
