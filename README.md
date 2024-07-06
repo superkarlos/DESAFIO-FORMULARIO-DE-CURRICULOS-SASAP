@@ -62,15 +62,21 @@ Caso tenha ocorrido algum erro, você verá esta página:
 
 1. Clone o repositório:
     ```sh
-    git clone https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP.git
+    git clone https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SPRING.git
     ```
 
 2. Navegue até o diretório do projeto:
     ```sh
-    cd DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP
+    cd DESAFIO-FORMULARIO-DE-CURRICULOS-SPRING
     ```
+    - ache a o arquivo:
+      
+      ![image](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SPRING/assets/50372440/21c8b72f-0d04-4ae6-8bd1-51f8d8d141a6)
 
-3. Configure o banco de dados MySQL no arquivo `application.properties`, localizado em `DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/blob/main/src/main/resources/application.properties`:
+
+3. Configure o banco de dados MySQL no arquivo `application.properties`.
+ - localizado em `DESAFIO-FORMULARIO-DE-CURRICULOS-SPRING\src\main\resources\application.properties`:
+
     ```properties
     spring.datasource.url=jdbc:mysql://localhost:3306/seubancodedados    # Lembre-se de criar um banco com esse nome
     spring.datasource.username=seuusuario                                # Lembre-se, este é o seu usuário do MySQL
@@ -82,15 +88,15 @@ Caso tenha ocorrido algum erro, você verá esta página:
 
     ![H2 Database](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/443520c5-3411-4cd7-b330-a3e0007e9f78)
 
-4. Compile e execute o projeto:
+5. Compile e execute o projeto:
     ```sh
     mvn clean install
     mvn spring-boot:run
     ```
 
-5. Abra seu navegador e acesse:
+6. Abra seu navegador e acesse:
     ```sh
-    http://localhost:8080/
+    http://localhost:8080
     ```
 
 ## Armazenamento dos Dados no Banco de Dados
