@@ -37,7 +37,11 @@ Caso tenha ocorrido algum erro, você verá esta página:
 
 ![Erro](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/66068f27-7de3-48d0-8a6b-ae67e901159e)
 
+### Envio de e-mail com os dados do formulário e o arquivo anexado:
 
+![Status](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/da5b9a3e-8e4a-4a70-a335-2dc4dabec054)
+
+- O status mostra se houve falha ou se foi enviado com sucesso.
 
 ## Tecnologias Utilizadas
 
@@ -71,12 +75,7 @@ Caso tenha ocorrido algum erro, você verá esta página:
     cd DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP
     ```
 
-- ache o arquivo  :
-   
-   ![image](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/cd2e786d-4114-40a9-9548-4e491d2fbb1a)
-  
-3. Configure o banco de dados MySQL no arquivo `application.properties`:
-
+3. Configure o banco de dados MySQL no arquivo `application.properties`, localizado em `DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/blob/main/src/main/resources/application.properties`:
     ```properties
     spring.datasource.url=jdbc:mysql://localhost:3306/seubancodedados    # Lembre-se de criar um banco com esse nome
     spring.datasource.username=seuusuario                                # Lembre-se, este é o seu usuário do MySQL
@@ -88,10 +87,15 @@ Caso tenha ocorrido algum erro, você verá esta página:
 
     ![H2 Database](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/443520c5-3411-4cd7-b330-a3e0007e9f78)
 
-6. Compile e execute o projeto:
+4. Compile e execute o projeto:
     ```sh
     mvn clean install
     mvn spring-boot:run
+    ```
+
+5. Abra seu navegador e acesse:
+    ```sh
+    http://localhost:8080/
     ```
 
 ## Armazenamento dos Dados no Banco de Dados
@@ -104,25 +108,12 @@ Caso tenha ocorrido algum erro, você verá esta página:
 4. Encontre e clique no banco de dados que você criou (por exemplo, `seubancodedados`).
 5. Você verá duas tabelas: `curriculo` e `email_model`.
 6. Selecione uma nova query e digite:
-   
     ```sql
     SELECT * FROM curriculo;
     ```
    para visualizar as informações do currículo no banco de dados.
 
 ![Banco de Dados](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/0b2c966e-44e2-40b3-ac8b-c30438d33c31)
-
-### Envio de e-mail com os dados do formulário e o arquivo anexado:
-
-6.1 Selecione uma nova query e digite:
-   
-  ```sql
-    SELECT * FROM emailModel;
-  ```
-
-![Status](https://github.com/superkarlos/DESAFIO-FORMULARIO-DE-CURRICULOS-SASAP/assets/50372440/da5b9a3e-8e4a-4a70-a335-2dc4dabec054)
-
-- O status mostra se houve falha ou se foi enviado com sucesso.
 
 ### Usando o terminal MySQL:
 
@@ -138,34 +129,7 @@ Caso tenha ocorrido algum erro, você verá esta página:
     ```sql
     USE seubancodedados;
     ```
-4. Crie as tabelas `Curriculo` e `EmailModel`:
-    ```sql
-    CREATE TABLE Curriculo (
-        id BIGINT AUTO_INCREMENT PRIMARY KEY,
-        nome VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        telefone VARCHAR(20) NOT NULL,
-        cargo_desejado VARCHAR(255),
-        escolaridade ENUM('FUNDAMENTAL', 'MEDIO', 'SUPERIOR', 'POS_GRADUACAO', 'MESTRADO', 'DOUTORADO') NOT NULL,
-        observacoes TEXT,
-        arquivo LONGBLOB NOT NULL,
-        ip VARCHAR(45),
-        data_hora_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        file_name VARCHAR(255)
-    );
 
-    CREATE TABLE EmailModel (
-        id BIGINT AUTO_INCREMENT PRIMARY KEY,
-        curriculo_id BIGINT,
-        enviador VARCHAR(255),
-        receptor VARCHAR(255),
-        subjt_titutlo VARCHAR(255),
-        texto TEXT,
-        data TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        status ENUM('ENVIADO', 'FALHA') NOT NULL,
-        candidato VARCHAR(255)
-    );
-    ```
 
 ## Licença
 
